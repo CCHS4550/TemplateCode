@@ -20,5 +20,6 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class Vision extends SubsystemBase{
-    PhotonCamera frontCamera = new PhotonCamera ();
+    PhotonCamera slimelight = new PhotonCamera ("slimelight");
+    PhotonPoseEstimator visionEstimator = new PhotonPoseEstimator
 }
