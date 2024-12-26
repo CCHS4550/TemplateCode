@@ -21,25 +21,18 @@ public final class Constants {
   }
   
   public static class MotorConstants {
-    public static final int FRONT_LEFT = 04;
-    public static boolean FRONT_LEFT_REVERSE = true;
-    
-    public static final int FRONT_RIGHT = 2;
-    public static boolean FRONT_RIGHT_REVERSE = false;
-    public static final int BACK_LEFT = 5;
-    public static boolean BACK_LEFT_REVERSE = true;
-    public static final int BACK_RIGHT = 1;
-    public static boolean BACK_RIGHT_REVERSE = false;
-    public static final int DOOR = 9;//3
-    public static boolean DOOR_REVERSE = true;
-
+    public static final int FRONT_LEFT_DRIVE = 0;
+    public static final int FRONT_LEFT_TURN = 1;
+    public static final int FRONT_RIGHT_DRIVE = 2;
+    public static final int FRONT_RIGHT_TURN = 3;
+    public static final int BACK_LEFT_DRIVE = 4;
+    public static final int BACK_LEFT_TURN = 5;
+    public static final int BACK_RIGHT_DRIVE = 6;
+    public static final int BACK_RIGHT_TURN = 7;
     
   }
 
-  public static class MechanismPositions{
-    public static final double DOOR_UP_POSITION = 0.0;
-    public static final double DOOR_DOWN_POSITION = (150.0/7.0 *(1/3)); //assuming it would be about 120 degrees
-  }
+  
 
   public static class ConversionConstants {
     public static final double WHEEL_CIRCUMFRENCE = Units.inchesToMeters(4*Math.PI);
