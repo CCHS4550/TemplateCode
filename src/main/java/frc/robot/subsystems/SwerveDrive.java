@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.helpers.CCSparkMax;
+import frc.robot.subsystems.*;
 
 
 public class SwerveDrive {
@@ -134,9 +135,9 @@ public static final SwerveModule backLeft =
     SwerveModuleState[] swerveModuleStates = {frontLeft.getState(), frontRight.getState(), backLeft.getState(), backRight.getState()};
     SwerveModulePosition[] swerveModulePositions;
     AHRS gyro = new AHRS(SPI.Port.kMXP);
-    SwerveDrivePoseEstimator swerveDrivePoseEstimator = new SwerveDrivePoseEstimator(Constants.DRIVE_KINEMATICS, new Rotation2d(gyro.getAngle()), swerveModulePositions, Constants.PoseConstants.hi);
+    SwerveDrivePoseEstimator swerveDrivePoseEstimator = new SwerveDrivePoseEstimator(Constants.SwerveConstants.DRIVE_KINEMATICS, new Rotation2d(gyro.getAngle()), swerveModulePositions, Constants.PoseConstants.hi);
 
-    
+
     public void setSwerveModulePositions(){
         swerveModulePositions[0] = new SwerveModulePosition(0, new Rotation2d(frontLeft.getAbsoluteEncoderWithOffsetRotations()));
         swerveModulePositions[1] = new SwerveModulePosition(0, new Rotation2d(frontRight.getAbsoluteEncoderWithOffsetRotations()));
@@ -144,12 +145,18 @@ public static final SwerveModule backLeft =
         swerveModulePositions[3] = new SwerveModulePosition(0, new Rotation2d(backRight.getAbsoluteEncoderWithOffsetRotations()));
     }
 
-    public void  updateSwerveModulePositions(){
+    public void updateSwerveModulePositions(){
         swerveModulePositions[0] = new SwerveModulePosition(frontLeft.getDrivePosition(), new Rotation2d(frontLeft.getAbsoluteEncoderWithOffsetRotations()));
         swerveModulePositions[1] = new SwerveModulePosition(frontRight.getDrivePosition(), new Rotation2d(frontRight.getAbsoluteEncoderWithOffsetRotations()));
         swerveModulePositions[2] = new SwerveModulePosition(backLeft.getDrivePosition(), new Rotation2d(backLeft.getAbsoluteEncoderWithOffsetRotations()));
         swerveModulePositions[3] = new SwerveModulePosition(backRight.getDrivePosition(), new Rotation2d(backRight.getAbsoluteEncoderWithOffsetRotations()));
     }
+    public void resetSwerveDrivePoseEstimator(){
+        swerveDrivePoseEstimator.resetPosition(new Rotation2d(gyro.getAngle()), swerveModulePositions, new Pose2d(swerveDrivePoseEstimator.getEstimatedPosition().getX(), swerveDrivePoseEstimator.getEstimatedPosition().getY(), gyro.getAngle()));
+    }
 
+    public void updateSwerveDrivePoseEstimator(){
+        
+    }
 
 }
