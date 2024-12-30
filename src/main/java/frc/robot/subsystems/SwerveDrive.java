@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.RobotDriveBase.MotorType;
 import frc.helpers.CCSparkMax;
 import frc.robot.Constants;
@@ -33,8 +34,12 @@ import frc.helpers.CCSparkMax;
 import frc.robot.subsystems.*;
 
 
+
 public class SwerveDrive {
-    
+    Vision vision = new Vision();
+    Timer timer = new Timer(); //ik i should start this in an init() method but too lazy
+    timer.start();
+    double currentTime = timer.get(); 
     public final SwerveModule frontRight =
     new SwerveModule(
         new CCSparkMax(
@@ -155,8 +160,21 @@ public static final SwerveModule backLeft =
         swerveDrivePoseEstimator.resetPosition(new Rotation2d(gyro.getAngle()), swerveModulePositions, new Pose2d(swerveDrivePoseEstimator.getEstimatedPosition().getX(), swerveDrivePoseEstimator.getEstimatedPosition().getY(), gyro.getAngle()));
     }
 
-    public void updateSwerveDrivePoseEstimator(){
-        
+    public void update(){
+        swerveDrivePoseEstimator.addVisionMeasurement(vision.getPhotonPoseEstimator().getEstimatedGlobalPose(), currentTime, vision.getVisionStdDevs());
+        swerveDrivePoseEstimator.updateWithTime(currentTime, gyro.getAngle(), swerveModulePositions);
+    }
+
+    public SwerveDrivePoseEstimator getSwerveDrivePoseEstimator(){
+        return swerveDrivePoseEstimator;
+    }
+
+    public static SwerveDrive currentInstance;
+    public static SwerveDrive getInstance(){
+        if (currentInstance == null){
+            currentInstance = new SwerveDrive();
+        }
+        return currentInstance;
     }
 
 }

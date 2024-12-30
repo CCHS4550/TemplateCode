@@ -324,6 +324,12 @@ public class Constants {
     public static int BLUE_STAGE_SIDE = 14;
     public static int BLUE_STAGE_TOP = 15;
     public static int BLUE_STAGE_BOTTOM = 16;
+
+    public static Translation3d slimelightOffset = new Translation3d(new Translation3d(0,0,0), new Rotation3d(0,0,0));
+    public static  final int slimelightPipline = 0;
+    public static final Pose2d [] aprilTagPoses = new Pose2d[16];
+
+    
   }
 
   public static Pose2d mirrorPose(Pose2d bluePose) {
