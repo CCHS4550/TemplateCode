@@ -4,6 +4,8 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.helpers.Vision;
@@ -22,7 +24,7 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class Vision extends SubsystemBase{
     AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
-    PhotonCamera slimelight = new PhotonCamera ("slimelight");
+    public static PhotonCamera slimelight = new PhotonCamera ("slimelight");
     slimelight.setDriverMode(true);
     slimelight.setPipelineIndex(Constants.AprilTag.slimelightPipline);
     PhotonPoseEstimator photonPoseEstimator = new PhotonPoseEstimator (aprilTagFieldLayout, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, slimelight, Constants.AprilTags.slimelightOffset);
@@ -40,5 +42,7 @@ public class Vision extends SubsystemBase{
     public Matrix<N3, N1> getVisionStdDevs(){
         return visionStdDevs;
     }
+
+    
 
 }
