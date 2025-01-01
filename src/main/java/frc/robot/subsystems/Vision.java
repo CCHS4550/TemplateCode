@@ -37,6 +37,23 @@ public class Vision extends SubsystemBase{
         return photonPoseEstimator;
     }
 
+    public static double getEstimatedPose(){
+        return photonPoseEstimator.getEstimatedGlobalPose();
+    }
+
+    public static double getEstimatedPoseX(){
+        return photonPoseEstimator.getEstimatedGlobalPose().getX();
+    }
+
+    public static double getEstimatedPoseY(){
+        return photonPoseEstimator.getEstimatedGlobalPose().getY();
+    }
+
+    public static double getEstimatedPoseYaw(){
+        return photonPoseEstimator.getEstimatedGlobalPose().getRadians();
+    }
+
+    
     Matrix<N3, N1> visionStdDevs ; //idk how tf i declare this
 
     public Matrix<N3, N1> getVisionStdDevs(){

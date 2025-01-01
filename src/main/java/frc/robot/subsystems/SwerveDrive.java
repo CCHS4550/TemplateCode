@@ -5,14 +5,19 @@ import edu.wpi.first.wpilibj.drive.RobotDriveBase.MotorType;
 import frc.helpers.CCSparkMax;
 import frc.maps.RobotMap;
 import frc.robot.Constants;
+import frc.robot.Constants.SwerveConstants;
 import frc.robot.subsystems.SwerveModule;
 
 import static edu.wpi.first.units.Units.Second;
 import static edu.wpi.first.units.Units.Seconds;
 import static edu.wpi.first.units.Units.Volts;
 
+import java.util.function.Supplier;
+
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -160,7 +165,7 @@ public static final SwerveModule backLeft =
         timer.start();
         currentTime = timer.getFGPATimestamp();
         swerveModulePositions = {};
-        
+    
 
     }
 
@@ -343,12 +348,43 @@ public static final SwerveModule backLeft =
     }
 
     public void alignToTagChassisSpeeds(double targetYaw){
+        chassisThetaPidController.setSetpoint(targetYaw);
+        while (chassisThetaPidController.atSetpoint())
         chassisSpeeds.omegaRadiansPerSecond =  chassisThetaPidController.calculate(swerveDrivePoseEstimator.getEstimatedPosition().getRotation().getRadians(), targetYaw);
         
 
 
     }
 
+        private ChassisSpeeds angularPIDCalc(
+            Supplier<Rotation2d> desiredRotation) {
+        double pid = angularDrivePID.calculate(getAdjustedYaw(gyro.getAngle().getRadians()).getDegrees(), desiredRotation.get().getDegrees());
+
+        ChassisSpeeds speeds = new ChassisSpeeds(swerveDrivePoseEstimator.getEstimatedPosition().getX(), swerveDrivePoseEstimator.getEstimatedPosition().getY(),
+                MathUtil.clamp(
+                        chassisThetaPidController.atSetpoint() ? 0 : pid + (Constants.SwerveConstants.angularDriveKS * Math.signum(pid)),
+                        -SwerveConstants.TURN_RATE_LIMIT, SwerveConstants.TURN_RATE_LIMIT));
+
+        return speeds;
+    }
+
+    public double getAdjustedYaw(double angle){
+        while (angle > Math.PI){
+            angle -= 2*Math.PI;
+
+        }
+        while (angle < -Math.PI){
+            angle += 2*Math.PI;
+        }
+        return angle;
+    }
+
+    public boolean atPoseSetpoint()
+    
+    public void pidToPose(Pose2d desiredPose){
+        double xSpeed = chassisXSPidController(swerveDrivePoseEstimator.getEstimatedPosition().getX(), desiredPose.getX());
+
+    }
     
 
 }
