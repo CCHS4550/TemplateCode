@@ -9,7 +9,7 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.helpers.Vision;
-import frc.maps.Constants;
+import frc.robot.Constants;
 import frc.robot.RobotState;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +60,27 @@ public class Vision extends SubsystemBase{
         return visionStdDevs;
     }
 
+    public double alignToSpeaker(boolean alliance){
+    //    double currentRotationRadians= SwerveDrive.getAdjustedYaw(SwerveDrive.getSwerveDrivePoseEstimator().getEstimatedPosition().getRotation().getRadians());
+       double xTransform;
+       double yTransform;
+       double alignAngle;
+       // assume that you are facing the april tag, new fix in the works
+       if (alliance){
+        xTransform = Constants.AprilTags.aprilTagPoses[4].getX() - SwerveDrive.getSwerveDrivePoseEstimator().getEstimatedPosition().getX();
+        yTransform = Constants.AprilTags.aprilTagPoses[4].getY() - SwerveDrive.getSwerveDrivePoseEstimator().getEstimatedPosition().getY();
+        alignAngle = Math.atan2(xTransform, yTransform)+180;
+       }
+       else {
+        xTransform = Constants.AprilTags.aprilTagPoses[7].getX() - SwerveDrive.getSwerveDrivePoseEstimator().getEstimatedPosition().getX();
+        yTransform = Constants.AprilTags.aprilTagPoses[7].getY() - SwerveDrive.getSwerveDrivePoseEstimator().getEstimatedPosition().getY();
+        alignAngle = Math.atan2(xTransform, yTransform);
+       }
+    
+       
+
+       
+    }
     
 
 }

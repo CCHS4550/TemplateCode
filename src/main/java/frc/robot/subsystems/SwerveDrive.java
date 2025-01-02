@@ -321,12 +321,12 @@ public static final SwerveModule backLeft =
         backRight.setState(desiredState[3]);
     }
 
-    public void update(){
+    public void updatePose(){
         swerveDrivePoseEstimator.addVisionMeasurement(vision.getPhotonPoseEstimator().getEstimatedGlobalPose(), currentTime, vision.getVisionStdDevs());
         swerveDrivePoseEstimator.updateWithTime(currentTime, gyro.getAngle(), swerveModulePositions);
     }
 
-    public SwerveDrivePoseEstimator getSwerveDrivePoseEstimator(){
+    public static SwerveDrivePoseEstimator getSwerveDrivePoseEstimator(){
         return swerveDrivePoseEstimator;
     }
 
@@ -368,7 +368,7 @@ public static final SwerveModule backLeft =
         return speeds;
     }
 
-    public double getAdjustedYaw(double angle){
+    public static double getAdjustedYaw(double angle){
         while (angle > Math.PI){
             angle -= 2*Math.PI;
 
@@ -383,7 +383,14 @@ public static final SwerveModule backLeft =
     
     public void pidToPose(Pose2d desiredPose){
         double xSpeed = chassisXSPidController(swerveDrivePoseEstimator.getEstimatedPosition().getX(), desiredPose.getX());
+        double ySpeed = chassisYSPidController(swerveDrivePoseEstimator.getEstimatedPosition().getY(), desiredPose.getY());
 
+        
+
+    }
+
+    public Command updateChassisSpeedsCommand(double xSpeed, double ySpeed, double thetaSpeed){
+        
     }
     
 
